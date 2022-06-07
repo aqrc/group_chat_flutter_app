@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'component/continue_button.dart';
+import 'component/name_input.dart';
+
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
 
@@ -7,20 +10,29 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome"),
+        title: const Text(
+          'Welcome',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text('How should we call you?',
+          children: <Widget>[
+            const Text(
+              'How should we call you?',
               style: TextStyle(fontSize: 24),
             ),
-            // TODO: form for the name
+            const NameInput(),
+            ContinueButton(
+              onPressed: () => print("Continue pressed"),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
