@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:groupchat/ui/chat/chat_page.dart';
+import 'package:groupchat/ui/chat/component/message.dart';
 import 'package:groupchat/ui/welcome/welcome_page.dart';
 
 void main() {
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const WelcomePage(),
+      // home: const WelcomePage(),
+      home: const ChatPage(),
     );
   }
 }
