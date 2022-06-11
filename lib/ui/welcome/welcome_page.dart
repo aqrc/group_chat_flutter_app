@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupchat/ui/chat/chat_page.dart';
 
 import 'component/continue_button.dart';
 import 'component/name_input.dart';
@@ -28,7 +29,10 @@ class WelcomePage extends StatelessWidget {
             ),
             const NameInput(),
             ContinueButton(
-              onPressed: () => print("Continue pressed"),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChatPage()),
+              ),
             ),
           ],
         ),

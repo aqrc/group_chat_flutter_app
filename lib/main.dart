@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:groupchat/ui/chat/chat_page.dart';
-import 'package:groupchat/ui/chat/component/message.dart';
 import 'package:groupchat/ui/welcome/welcome_page.dart';
+import 'package:provider/provider.dart';
+import 'model/state/app_state.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    Provider(
+      create: (_) => AppState(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,8 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const WelcomePage(),
-      home: const ChatPage(),
+      home: const WelcomePage(),
     );
   }
 }
