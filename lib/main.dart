@@ -17,8 +17,13 @@ void main() async {
     MultiProvider(
       child: const MyApp(),
       providers: [
-        Provider(create: (_) => AppState()),
-        Provider(create: (_) => MessageService()),
+        Provider<AppState>(
+          create: (_) => AppState(),
+          lazy: false,
+        ),
+        Provider<MessageService>(
+          create: (context) => MessageService(context.read<AppState>()),
+        ),
       ],
     ),
   );

@@ -45,13 +45,13 @@ class ChatPage extends StatelessWidget {
                     reverse: true,
                     itemCount: data.size,
                     itemBuilder: (context, index) {
-                      var messageType = (index % 3 == 2) // just for testing
-                          ? MessageType.outgoing
-                          : MessageType.incoming;
+                      var messageDTO = data.docs[index].data();
+                      var messageType = context.read<MessageService>().defineMessageType(messageDTO);
+
                       return Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Message(
-                          messageDTO: data.docs[index].data(),
+                          messageDTO: messageDTO,
                           messageType: messageType,
                         ),
                         alignment: _getMessageAlignment(messageType),
