@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:groupchat/model/message_service.dart';
 import 'package:groupchat/ui/chat/component/message.dart';
+import 'package:provider/provider.dart';
 
+import '../../model/dto/message_dto.dart';
 import 'component/chat_input.dart';
 
 class ChatPage extends StatelessWidget {
@@ -22,25 +26,39 @@ class ChatPage extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.only(bottom: 59),
-            child: ListView.builder(
-              reverse: true,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                var messageType = (index % 3 == 2) // just for testing
-                    ? MessageType.outgoing
-                    : MessageType.incoming;
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Message(
-                    name: 'Andrey',
-                    message: 'Message $index',
-                    time: '18:${30 - index}',
-                    messageType: messageType,
-                  ),
-                  alignment: _getMessageAlignment(messageType),
-                );
-              },
-            ),
+            child: StreamBuilder<QuerySnapshot<MessageDTO>>(
+                stream: context.read<MessageService>().queryMessages().snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final data = snapshot.requireData;
+
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: data.size,
+                    itemBuilder: (context, index) {
+                      var messageType = (index % 3 == 2) // just for testing
+                          ? MessageType.outgoing
+                          : MessageType.incoming;
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Message(
+                          messageDTO: data.docs[index].data(),
+                          messageType: messageType,
+                        ),
+                        alignment: _getMessageAlignment(messageType),
+                      );
+                    },
+                  );
+                }),
           ),
           const Align(
             alignment: Alignment.bottomCenter,

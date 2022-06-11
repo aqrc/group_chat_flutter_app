@@ -1,13 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:groupchat/model/message_service.dart';
 import 'package:groupchat/ui/welcome/welcome_page.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'model/state/app_state.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseFirestore.instance.settings =
+      const Settings(persistenceEnabled: true);
+
   runApp(
-    Provider(
-      create: (_) => AppState(),
+    MultiProvider(
       child: const MyApp(),
+      providers: [
+        Provider(create: (_) => AppState()),
+        Provider(create: (_) => MessageService()),
+      ],
     ),
   );
 }

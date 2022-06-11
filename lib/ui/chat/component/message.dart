@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../model/dto/message_dto.dart';
+
 enum MessageType { incoming, outgoing }
 
 class Message extends StatelessWidget {
@@ -9,16 +11,12 @@ class Message extends StatelessWidget {
   static const outgoingMessageTextColor = Color(0xffffffff);
   static const messageBorder = BorderRadius.all(Radius.circular(20));
 
-  final String name;
-  final String message;
-  final String time;
+  final MessageDTO messageDTO;
   final MessageType messageType;
 
   const Message({
     Key? key,
-    required this.name,
-    required this.message,
-    required this.time,
+    required this.messageDTO,
     required this.messageType,
   }) : super(key: key);
 
@@ -37,7 +35,7 @@ class Message extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               child: Text(
-                message,
+                messageDTO.message,
                 style: TextStyle(
                   color: _getMessageTextColor(),
                   fontSize: 18,
@@ -47,7 +45,7 @@ class Message extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            time,
+            _getFormattedTime(),
             style: const TextStyle(
               fontSize: 13,
               color: timeColor,
@@ -66,7 +64,7 @@ class Message extends StatelessWidget {
         return Row(
           children: [
             Text(
-              name,
+              messageDTO.authorName,
               style: const TextStyle(fontSize: 13),
             ),
           ],
@@ -105,5 +103,17 @@ class Message extends StatelessWidget {
       case MessageType.outgoing:
         return messageBorder.copyWith(topRight: Radius.zero);
     }
+  }
+
+  String _getFormattedTime() {
+    var localDateTime = messageDTO.date.toDate().toLocal();
+    var hours = _ensureTwoDigits(localDateTime.hour);
+    var minutes = _ensureTwoDigits(localDateTime.minute);
+
+    return "$hours:$minutes";
+  }
+
+  String _ensureTwoDigits(int time) {
+    return (time < 10) ? "0$time" : "$time";
   }
 }
