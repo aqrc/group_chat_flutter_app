@@ -5,7 +5,9 @@ import 'component/continue_button.dart';
 import 'component/name_input.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
+
+  WelcomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,19 @@ class WelcomePage extends StatelessWidget {
               'How should we call you?',
               style: TextStyle(fontSize: 24),
             ),
-            const NameInput(),
+            Form(
+              key: _formKey,
+              child: const NameInput(),
+            ),
             ContinueButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChatPage()),
-              ),
+              onPressed: () {
+                if (!_formKey.currentState!.validate()) return;
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              },
             ),
           ],
         ),

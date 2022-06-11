@@ -13,11 +13,15 @@ class NameInput extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) => (value == null || value.isEmpty)
+            ? "Name should not be empty"
+            : null,
         onChanged: (value) => context.read<AppState>().setName(value),
         decoration: InputDecoration(
           disabledBorder: inputBorder,
           focusedBorder: inputBorder,
+          focusedErrorBorder: inputBorder,
           errorBorder: inputBorder,
           enabledBorder: inputBorder,
           hintText: 'Enter your name here...',
