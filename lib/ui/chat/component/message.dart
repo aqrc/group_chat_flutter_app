@@ -24,7 +24,7 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicWidth(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _getNameRow(),
           const SizedBox(height: 7),
@@ -44,13 +44,16 @@ class Message extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            _getFormattedTime(),
-            style: const TextStyle(
-              fontSize: 13,
-              color: timeColor,
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              _getFormattedTime(),
+              style: const TextStyle(
+                fontSize: 13,
+                color: timeColor,
+              ),
+              textAlign: TextAlign.right,
             ),
-            textAlign: TextAlign.right,
           ),
           const SizedBox(height: 4),
         ],
@@ -61,13 +64,9 @@ class Message extends StatelessWidget {
   Widget _getNameRow() {
     switch (messageType) {
       case MessageType.incoming:
-        return Row(
-          children: [
-            Text(
-              messageDTO.authorName,
-              style: const TextStyle(fontSize: 13),
-            ),
-          ],
+        return Text(
+          messageDTO.authorName,
+          style: const TextStyle(fontSize: 13),
         );
 
       case MessageType.outgoing:
